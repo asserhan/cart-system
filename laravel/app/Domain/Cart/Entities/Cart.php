@@ -164,6 +164,7 @@ final class Cart
     public function markReminderSent(ReminderStep $step, DateTimeImmutable $sentAt): void
     {
         $this->assertOpen();
+        $this->assertReminderDependencies($step);
 
         if ($this->hasReminderBeenSent($step)) {
             throw CartStateException::reminderAlreadySent($step);
@@ -202,6 +203,17 @@ final class Cart
                 $this->thirdReminderSentAt = $value;
 
                 break;
+        }
+    }
+
+    private function assertReminderDependencies(ReminderStep $step): void
+    {
+        if ($step === ReminderStep::SECOND && !$this->hasReminderBeenSent(ReminderStep::FIRST)) {
+            throw CartStateException::missingReminderDependency($step);
+        }
+
+        if ($step === ReminderStep::THIRD && !$this->hasReminderBeenSent(ReminderStep::SECOND)) {
+            throw CartStateException::missingReminderDependency($step);
         }
     }
 

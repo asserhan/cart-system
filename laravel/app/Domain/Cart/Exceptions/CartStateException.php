@@ -16,6 +16,13 @@ final class CartStateException extends RuntimeException
     {
         return new self(sprintf('The %s reminder has already been sent.', $step->value));
     }
-
+    
+    public static function missingReminderDependency(ReminderStep $step): self
+    {
+        return new self(sprintf(
+            'Cannot send the %s reminder before completing the previous reminder.',
+            $step->value
+        ));
+    }
 
 }
