@@ -1,8 +1,14 @@
 <?php
 
-namespace App\Jobs;
+namespace App\Application\Cart\Jobs;
 
+use App\Application\Cart\Commands\SendCartReminderCommand;
+use App\Application\Cart\Handlers\SendCartReminderHandler;
+use App\Domain\Cart\ValueObjects\ReminderStep;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 use Illuminate\Foundation\Queue\Queueable;
 
 class SendReminderJob implements ShouldQueue
